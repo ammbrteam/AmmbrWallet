@@ -1,0 +1,250 @@
+/*--- Fonts ---*/
+
+@font-face {
+    font-family: Lato;
+    src: url(../fonts/Lato-Light.woff) format("woff"), url(../fonts/Lato-Light.ttf) format("truetype");
+    font-style: normal;
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Lato;
+    src: url(../fonts/Lato-Regular.woff) format("woff"), url(../fonts/Lato-Regular.ttf) format("truetype");
+    font-style: normal;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Lato;
+    src: url(../fonts/Lato-Bold.woff) format("woff"), url(../fonts/Lato-Bold.ttf) format("truetype");
+    font-style: normal;
+    font-weight: 700;
+}
+
+
+/*--- html / body ---*/
+
+html {
+    font-family: sans-serif;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    color: #fff;
+}
+
+body {
+    margin: 0;
+    background-image: linear-gradient(to bottom right, #000, #002f4b);
+    min-height: 100vh;
+    height: 100%;
+    position: relative;
+}
+
+
+/*--- flow ---*/
+
+.main-block {
+    padding: 50px;
+}
+
+.inner-block {
+    border: 1px solid #FFFFFF;
+    padding: 60px;
+    -webkit-box-shadow: 0px 0px 24px -5px rgba(255, 255, 255, 0.79);
+    -moz-box-shadow: 0px 0px 24px -5px rgba(255, 255, 255, 0.79);
+    box-shadow: 0px 0px 24px -5px rgba(255, 255, 255, 0.79);
+}
+
+.inner-block1 {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.inner-block2 {
+    background: #000;
+    height: 60px;
+    width: 180px;
+    border: 1px solid #fff;
+    margin: -90px auto 30px;
+}
+
+.inner-block3 {
+    margin: 30px auto -90px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-center.h1 {
+    font-size: 50px;
+    margin-top: 0px;
+    margin-bottom: 6%;
+}
+
+.p1 {
+    font-size: 22px;
+    margin-bottom: 30px;
+}
+
+input[type=text]+.eye {
+    cursor: pointer;
+}
+
+input[type=text]+.eye:before {
+    content: "";
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    background: url(../images/icon-eye.svg);
+}
+
+input[type=password]+.eye {
+    cursor: pointer;
+}
+
+input[type=password]+.eye:before {
+    content: "";
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    background: url(../images/icon-eye-closed.svg);
+}
+
+.input-group-addon.eye {
+    background: none;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none;
+  margin: 0; 
+}
+input[type=number]{
+    -moz-appearance: textfield;
+}
+.form-control {
+    height: 50px !important;
+}
+
+.form-control.bg {
+    background: none;
+}
+
+.btn-default.btn1 {
+    border: 1px solid #ccc;
+    border-radius: 0px;
+    font-size: 18px;
+    padding: 10px 15px;
+    float: right;
+    margin-left: 20px;
+}
+
+.btn-default.btn2 {
+    float: left;
+    margin-left: 0px;
+}
+
+.btn-default.btn3 {
+    background: rgba(0, 0, 0, 0.4);
+    color: #fff;
+}
+
+.label1 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.margin {
+    margin-bottom: 30px;
+}
+
+.margin1 {
+    margin-bottom: 50px;
+}
+
+.warning {
+    color: red;
+}
+
+.general {
+    color: green;
+}
+
+.bold {
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 30px;
+    text-align: right;
+}
+
+.qr-code {
+    width: 250px;
+   
+}
+.front-btn-size {
+    font-size: 25px;
+    width: 210px;
+}
+.qr-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 100;
+    overflow-y: auto;
+}
+
+.qr-modal-inner {
+    margin-top: 8%;
+}
+
+.input-convert {
+    width: 100%;
+    background: #000;
+    border: none;
+    border-bottom: 1px solid #fff;
+    height: 35px;
+    text-align: center;
+}
+
+.input-image {
+    display: block;
+    width: 50px;
+    height: auto;
+    margin: 0 auto;
+}
+
+.text-convert-size {
+    height: 50px;
+}
+
+.btn-convert.btn {
+    background: #fff;
+    color: #000;
+    border-radius: 0px;
+    padding: 1px 8px;
+}
+
+.btn-convert.btn.active {
+    background: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+}
+
+.eth-img,
+.bit-img {
+    width: auto;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.img-div {
+    border: 1px solid #fff;
+    padding: 10px;
+    /* max-width: 90% !important; */
+}
