@@ -324,3 +324,6 @@ input[type=number]{
 .modal-table tbody tr th{
     width: 200px;
 }
+.hideImg{
+	display:none;
+}

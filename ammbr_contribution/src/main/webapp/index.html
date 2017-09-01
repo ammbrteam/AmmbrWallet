@@ -86,7 +86,7 @@
                         </div>
                         <div class="row margin">
                             <div class="col-md-6 col-md-offset-3">
-                                <div class="img-div" role="button" data-toggle="modal" data-target="#myModal"  >
+                                <div class="img-div" role="button" data-toggle="modal" data-target="#myModal" onclick="add_btn()" >
                                    <img src="images/bank+.png" class="bit-img" > Bank Transfer
                                 </div>
                             </div>
@@ -146,7 +146,7 @@
       
           <!-- Modal content-->
           <div class="modal-content modal-style">
-                <img src="images/icon-x.svg " data-dismiss="modal" class="pull-right" style="margin:-15px -20px">
+                <img id="cross_image" src="images/icon-x.svg " data-dismiss="modal" class="pull-right" style="margin:-15px -20px">
             <div class="modal-header">
               <!-- <button type="button" class="close" data-dismiss="modal" style="color:#000">&times;</button> -->
               
@@ -215,9 +215,10 @@
         <div class="col-md-9">
             <h4> Send to : <a href="mailto:bennypang@bpclegal.com" class="text-bold" style="text-decoration:none"> bennypang@bpclegal.com </a></h4>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3" id="img_element">
                
-                <a href="javascript:genPDF()" class="btn pdf" > Download PDF </a>
+                <!--<a href="javascript:genPDF()" class="btn pdf" > Download PDF </a>-->
+                <img src="images/btn-pdf.png" role="button" onclick="genPDF()">
         </div>
 
     </div>
@@ -295,7 +296,16 @@ $('#crowdsaleAbi').val(crowdsaleAbi);
            $('#totalAmmbr').text(totalAmmbr);
     }
 
+var add_btn=function(){
+    $('#img_element').removeClass("hideImg");
+    $('#cross_image').removeClass("hideImg");
+}
+
     function genPDF(){
+
+$('#img_element').addClass("hideImg");
+$('#cross_image').addClass("hideImg");
+
         html2canvas(document.getElementById('myModal'), {
             onrendered: function(canvas){
                 var img = canvas.toDataURL("image/png");
@@ -307,6 +317,7 @@ $('#crowdsaleAbi').val(crowdsaleAbi);
             }
         });
 
+    $('#myModal').modal('toggle');
     }
 
 
