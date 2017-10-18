@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="mewApp">
+
+<head>
+    <meta charset="utf-8">
+    <title>Ammbr</title>
+    <link rel="canonical" href="http://www.ammbr.com" />
+    <meta name="description" content="Ammbr is a new communications and transactional Edge Computing platform built to deliver the speed, scalability and security demanded by the confluence of next generation technologies, global enterprise and regulation. A highly secure consensus technology that uses low-cost, high-performance silicon, energy efficient Proof of Work, and self-sovereign digital identity to underpin the Ammbr architecture.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <meta name="google-site-verification" content="IpChQ00NYUQuNs_7Xs6xlnSdzalOlTUYbBsr8f7OpvM"/> -->
+    <link rel="shortcut icon" href="resources/images/favicon.png">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="resources/css/style.css">
+    <link rel="stylesheet" href="resources/css/bootstrap.min.css">
+    
+    <!-- JS Files -->
+    
+    <script type="text/javascript" src="resources/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="resources/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="resources/js/html2canvas.min.js"></script>
+    <script type="text/javascript" src="resources/js/pdfmake.js"></script>
+    <script type="text/javascript" src="resources/js/vfs_fonts.js"></script>
+
+    <!-- <script type="text/javascript" src="resources/js/jspdf.min.js"></script> -->
+    <!-- <script type="text/javascript" src="resources/js/jquery-1.12.3.min.js"></script> -->
+    <script type="text/javascript" src="resources/js/pdf_background.js"></script>
+    <script type="text/javascript" src="resources/js/walletproperties.js"></script>
+    <script type="text/javascript" src="resources/js/ammbr-master.js"></script>
+    <script type="text/javascript" src="resources/js/server-prop.js"></script>
+    <script type="text/javascript" src="resources/js/ammbr-static.min.js"></script>
+    <script type="text/javascript" src="resources/js/bitcore-lib.js"></script>
+    <script type="text/javascript" src="resources/js/bitcore-mnemonic.js"></script>
+</head>
+
+<body>
+	 <script>
+        var bitcore = require('bitcore-lib');
+        var Mnemonic = require('bitcore-mnemonic');
+    </script>
+
+    <header class="{{curNode.name}} {{curNode.service}} {{curNode.service}} nav-index-{{gService.currentTab}}" aria-label="header" ng-controller='tabsCtrl'>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 container2">
+                    <section style="min-height: 50%" ng-controller='viewCtrl'>
+                        <div class="tab-content">
+                            <main class="tab-pane block--container active" ng-if="globalService.currentTab==globalService.tabs.generateWallet.id" ng-controller='walletGenCtrl' role="main" ng-cloak>
+                                
+                                <article class="mainScreen" ng-show="showFrontPage">
+                                        <h1 class="text-center main-heading"> Pre-sale registration </h1>
+                                    <section class="main-block marginBottom">
+                                        <form name="createWalletForm" novalidate>
+                                            <div class="inner-block">
+                                                <div class="row noMargin">
+                                                    <div class="col.xs-12 ">
+                                                        <img class="pull-left img-main" src="resources/images/logo1.png"> 
+                                                    </div>
+                                                </div>
+                                                <div class="row marginTop">
+                                                    <div class="col-md-6">
+                                                        <div class=" form-group">
+                                                            <label class="label1"> First name </label>
+                                                            <input type="text" required name="firstName" class="form-control" ng-model="firstName" autocomplete="off">
+                                                        </div>
+                                                        <div>
+                                                            <p class="errMessage" ng-if="createWalletForm.firstName.$touched && !createWalletForm.firstName.$valid || firstNameValid && !createWalletForm.firstName.$valid"> First name is required </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class=" form-group">
+                                                            <label class="label1"> Last name </label>
+                                                            <input type="text" required name="lastName" class="form-control" ng-model="lastName" autocomplete="off">
+                                                        </div>
+                                                        <div>
+                                                            <p class="errMessage" ng-if="createWalletForm.lastName.$touched && !createWalletForm.lastName.$valid || lastNameValid && !createWalletForm.lastName.$valid"> Last name is required </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div class=" form-group">
+                                                            <label  class="label1"><h3 class="intHead">Institution or Company <small style="font-size:12px"> (if applicable) </small> </h3>  </label>
+                                                            <input type="text" class="form-control" name="institution" ng-model="institution" autocomplete="off">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                            <div class=" form-group">
+                                                        <label class="label1"> Email </label>
+                                                            <input type="email" name="email" required class="form-control" ng-model="email" autocomplete="off">
+                                                        </div>
+                                                        <div>
+                                                            <p class="errMessage" ng-if="createWalletForm.email.$touched && createWalletForm.email.$pristine || emailValid && createWalletForm.email.$pristine"> Email is required </p>
+                                                            <p class="errMessage" ng-if="!createWalletForm.email.$pristine && createWalletForm.email.$invalid"> Please provide a valid email </p>
+                                                            <p class="errMessage" ng-if="duplicateEmail"> Email already exist </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-6">
+                                                        <div class="form-group">
+                                                            <label class="label1">Password</label>
+                                                            <input type="password" required class="form-control" name="password" ng-model="password" autocomplete="off" >
+                                                        </div>
+                                                        <div>
+                                                            <p class="errMessage" ng-if="createWalletForm.password.$touched && !createWalletForm.password.$valid || passwordValid && !createWalletForm.password.$valid"> Password is required </p>
+                                                            <p class="errMessage" ng-if="passwordValid1 && createWalletForm.password.$touched"> Your password must be at least 9 characters. </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        <div class="form-group">
+                                                            <label class="label1">Confirm Password</label>
+                                                            <input type="password" required class="form-control" name="confirmPassword" ng-model="confirmPassword" autocomplete="off" >
+                                                        </div>
+                                                        <div>
+                                                            <p class="errMessage" ng-if="createWalletForm.confirmPassword.$touched && !createWalletForm.confirmPassword.$valid || confirmPasswordValid && !createWalletForm.confirmPassword.$valid"> Please confirm your password </p>
+                                                            <p class="errMessage" ng-if="confirmPasswordValid1 && createWalletForm.password.$touched"> Password must be same </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                               
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="label1"> Country of residence </label>
+                                                            <select required class="form-control" name="country" ng-model="country">
+                                                                <option value="" >Select Country</option>
+                                                                <option ng-repeat="eachCountry in countries" value={{eachCountry}} >{{eachCountry}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div>
+                                                            <p class="errMessage" ng-if="createWalletForm.country.$touched && !createWalletForm.country.$valid || countryValid && !createWalletForm.country.$valid"> Please select the country </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row marginTop">
+                                                    <div class="col-xs-12">
+                                                        <label class="checkbox-inline"><input type="checkbox" ng-model="agreed" > I have read and agree to the <a class="linkTerms" href="javascript:void(0)">terms and conditions</a> </label>
+                                                    </div>
+                                                </div>
+                                                <!--style="display:none" ng-show="errorText==true"-->
+                                                <div class="row marginTop">
+                                                    <div class="col-xs-9">
+                                                        <p class="noteMessage">Access to the Ammbr pre-sale is granted to pualifying institutions and individuals after a review of any jurisdictional limitations which might apply. If approved, you will receive access credentials by email.</p>
+                                                    </div>
+                                                    <div class="col-xs-3">
+                                                        <button type="submit" class="btn btn-default btn1" ng-disabled="!agreed" ng-click="genHdkeys()">Next</button>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <p class="errMessage marginTop" id="errorText" class="warning p2" style="display:none" ></p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </form>
+                                    </section>
+                                </article>
+
+                              
+                               
+
+
+                                <!-- <article class="tokenSale" ng-show="!showGetAddress && !showFrontPage"> -->
+                                <article class="tokenSale" ng-show="!showFrontPage">
+                                    <h1 class="text-center main-heading"> Ammbr token sale </h1>
+                                    <section>
+                                        <div>
+                                            <!-- <div class="row">
+                                                <div class="col-xs-12 step1 clearfix">
+                                                    <img class="pull-left img-main" src="resources/images/logo1.png">
+                                                </div>
+                                            </div> -->
+                                            <div class="row">
+                                                <div class="col-xs-12 marginTop">
+                                                    <h4 class="noMargin">Purchase calculator</h4>
+                                                </div>
+                                            </div>
+                                            <div class="row radioGroup">
+                                                <div class="col-xs-12 ">
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="option" id="ETH" ng-click="updateAmmbrAmount('ETH')" checked="checked" >Ether
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="option" ng-click="updateAmmbrAmount('BTC')" id="BTC" >Bitcoin
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="option" ng-click="updateAmmbrAmount('BTCSH')" id="BTCSH" >Bitcoin Cash
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="option" ng-click="updateAmmbrAmount('BTFR')" id="BTFR" >Bank transfer
+                                                    </label>
+                                                           <a href="javascript:void(0)" class="pull-right step1" ng-click="continueOffine()"> Offline mode </a>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="main-block block1">
+                                                        <div class="row allignMiddle allignMiddle1" >
+                                                            <div class="col-xs-2">
+                                                                <input type="number" id="amount" ng-keyup="updateAmmbrAmount()" class="form-control" autocomplete="off" >
+                                                                <P class="text-center noMargin">Enter Amount</P>
+                                                            </div>
+                                                            <div class="col-xs-2">
+                                                                <img src="resources/images/convert-arrow+.png" alt="converter" class="converter img-responsive" >
+                                                            </div>
+                                                            <div class="col-xs-2">
+                                                                <input type="number" id="ammbrAmount" ng-keyup="updateAmount()" class="form-control" autocomplete="off" >
+                                                                <P class="text-center noMargin">Ammbr tokens</P>
+                                                            </div>
+                                                            <div class="col-xs-2">
+                                                                    <img class="img-main" src="resources/images/logo1.png">
+                                                            </div>
+                                                            <div class="col-xs-4">
+                                                                <div class="main-block block1 block2" style="color:#a6a7a9;font-weight:normal">
+                                                                    <p class="noMargin">Bonus Rate : {{bonusRate}}</p>
+                                                                    <!--<p class="noMargin">Bonus Tokens : {{bonusTokens}}</p>-->
+                                                                    <!--<p class="noMargin">Total Tokens : {{totalTokens}}</p>-->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <h4 class="noMargin">Receive address for your Ammbr tokens</h4>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="main-block block1">
+                                                    <!-- <form name="ethAddressForm" novalidate> -->
+                                                    <div class="row" style="height:80px;">
+                                                        <div class="col-xs-6">
+                                                             <label class="label1"><h3 class="intHead">Enter Wallet Address <small style="font-size:12px"> (public key) </small></h3></label>
+                                                            <input type="text" required class="form-control" id="ethPublicAddress" >
+                                                            <p class="errMessage noMargin" ng-if="ethAddressValid">Ethereum address is not valid</p>
+                                                            
+                                                        </div>
+                                                        <div class="col-xs-6 popoverImg">
+                                                            <!-- <img src="resources/images/popover.png" alt=""> -->
+                                                            <p class="popoverImgText ">If you need a wallet,<a class="getWallet" role="button" data-toggle="modal" data-target="#myModal"> get one </a>and then enter its address to continue.</p>
+                                                        </div>
+                                                    </div>
+                                                <!-- </form> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <button type="submit" class="btn payInstruction marginTop" ng-click="updateAssociation()" ng-disabled="showInstructionDiv">Show me payment instructions</button>
+                                            </div>
+                                        </div>
+                                    </section>
+<section ng-show="showInstructionDiv">
+                                    <section ng-show="showEth">
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <h4 class="marginTop"> Instructions </h4>
+                                                <p class="noteMessage">Make payment to the Ethereum contract address provided at right. Your Ammbr tokens will be automatically credited to the receive address you've provided above once the payment transaction is confirmed by the network.</p>
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <h4 class="marginTop"> Payment method: Ethereum contract address </h4>
+                                                <h4 class="addressText" id="eth_address">{{contAdd}}</h4>
+                                                <h5 class="addressText1 noBottom" style="font-weight:bold">Transaction Data</h5>
+                                                <p class="addressText1" id="eth_tx_data">{{txHash}}</p>
+                                                <h5 class="addressText1 noBottom" style="font-weight:bold">Suggested Gas Limit</h5>
+                                                <p class="addressText1" id="eth_gas_limit">{{gasLimit}}</p>
+                                            </div>
+                                        </div>
+                                    </section>
+
+                                    <section ng-show="showBTC">
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <h4 class="marginTop"> Instructions </h4>
+                                                <p class="noteMessage">Send Bitcoin payments to the Bitcoin payment address provided at right. This Bitcoin payment address is unique for your contributions.</p>
+                                                <p class="noteMessage">Once payment has been received and confirmed by the network, the Ammbr Foundation token sale smart contract will automatically issue your AMMBR tokens to the wallet address you've provided above.</p>
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <h4 class="marginTop"> Payment method: Bitcoin address </h4>
+                                                <h4 class="addressText" id="bitcoin_address">{{bitCoinAddres}}</h4>
+                                            </div>
+                                        </div>
+                                    </section>
+
+                                    <section ng-show="showBTCSH">
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <h4 class="marginTop"> Instructions </h4>
+                                                <p class="noteMessage">Send Bitcoin Cash payments to the Bitcoin Cash payment address provided at right. This Bitcoin Cash payment address is unique for your contributions.</p>
+                                                <p class="noteMessage">Once payment has been received and confirmed by the network, the Ammbr Foundation token sale smart contract will automatically issue your AMMBR tokens to the wallet address you've provided above.</p>
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <h4 class="marginTop"> Payment method: Bitcoin Cash address </h4>
+                                                <h4 class="addressText" id="bitcoin_cash_address">{{bitCoinAddres}}</h4>
+                                            </div>
+                                        </div>
+                                    </section>
+
+
+                                    <section ng-show="showBTFR">
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <h4 class="marginTop"> Instructions </h4>
+                                                <h5 class="marginTop"> Buying AMMBR with cash </h5>
+                                                <p class="noteMessage">The Ammbr Foundations has appointed BPC Law in Hong Kong as the escrow attorney for
+                                                    receiving cash on behalf of the Ammbr Foundation.</p>
+                                                <p class="noteMessage">The minimum cash transaction that can be accepted is the equivalent of $10,000 USD. In order to procure AMMBR through BPC Law,
+                                                    participants are required to fulfill the necessary requirements for KYC/AML compliance, as well as accredition status.
+                                                </p>
+                                                <p class="noteMessage">Please fill out the form at right and submit. Qualifying individuals & institutions will be furnished with bank transfer instructions. Upon receipt of payment, BPC Law will release your AMMBR tokens from escrow and transfer them to the wallet address you have provided above.</p>
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <h4 class="marginTop"> Payment method: Bank transfer </h4>
+                                            <div>
+                                                <form class="form-horizontal bankTransfer" name="btForm" novalidate>
+                                                    <div ng-show="!disableSaveBankTransfer">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-xs-3 intLabel">Last name</label>
+                                                            <div class="col-xs-9 intLabel1">
+                                                                <input type="text" class="form-control input" name="btLastName" ng-model="btLastName" required autocomplete="off">
+                                                                <div>
+                                                                    <p class="errMessage marginTop3" ng-if="btForm.btLastName.$touched && !btForm.btLastName.$valid || btLastNameValid && !btForm.btLastName.$valid"> Last name is required </p>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label col-xs-3 intLabel">First name</label>
+                                                            <div class="col-xs-9 intLabel1">
+                                                                <input type="text" class="form-control input" ng-model="btFirstName" name="btFirstName" required autocomplete="off">
+                                                                <div>
+                                                                    <p class="errMessage marginTop3" ng-if="btForm.btFirstName.$touched && !btForm.btFirstName.$valid || btFirstNameValid && !btForm.btFirstName.$valid"> First name is required </p>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label col-xs-3 intLabel">Institution or company<br>(if applicable)</label>
+                                                            <div class="col-xs-9 intLabel1 ">
+                                                                <input type="text" class="form-control input" ng-model="btCompany">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label col-xs-3 intLabel">Address</label>
+                                                            <div class="col-xs-9 intLabel1">
+                                                                <input type="text" class="form-control input" ng-model="btAddress" name="btAddress" required autocomplete="off">
+                                                                <div>
+                                                                    <p class="errMessage marginTop3" ng-if="btForm.btAddress.$touched && !btForm.btAddress.$valid || btAddressValid && !btForm.btAddress.$valid"> Address is required </p>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label col-xs-3 intLabel">Country</label>
+                                                            <div class="col-xs-9 intLabel1">
+                                                                <input type="text" class="form-control input" ng-model="btCountry" name="btCountry" required autocomplete="off">
+                                                                <div>
+                                                                    <p class="errMessage marginTop3" ng-if="btForm.btCountry.$touched && !btForm.btCountry.$valid || btCountryValid && !btForm.btCountry.$valid"> Country is required </p>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label col-xs-3 intLabel">Mobile Phone</label>
+                                                            <div class="col-xs-9 intLabel1">
+                                                                <input type="text" class="form-control input" ng-model="btmobilePhone" name="btmobilePhone" required autocomplete="off">
+                                                                <div>
+                                                                    <p class="errMessage marginTop3" ng-if="btForm.btmobilePhone.$touched && !btForm.btmobilePhone.$valid || btmobilePhoneValid && !btForm.btmobilePhone.$valid"> Mobile phone is required </p>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label col-xs-3 intLabel">E-Mail Address</label>
+                                                            <div class="col-xs-9 intLabel1">
+                                                                <input type="email" class="form-control input" ng-model="btEmailAddress" name="btEmailAddress" required autocomplete="off">
+                                                                <div>
+                                                                    <p class="errMessage marginTop3" ng-if="btForm.btEmailAddress.$touched && btForm.btEmailAddress.$pristine || btEmailAddressValid && btForm.btEmailAddress.$pristine"> E-Mail address is required </p>
+                                                                    <p class="errMessage marginTop3" ng-if="!btForm.btEmailAddress.$pristine && btForm.btEmailAddress.$invalid"> Please provide a valid email </p>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label col-xs-3 intLabel">Origin of Funds</label>
+                                                            <div class="col-xs-9 intLabel1 radioGroup1">
+                                                                <label class="radio-inline ">
+                                                                    <input type="radio" name="option" checked="checked" value="Salary" ng-model="btOrigiinOfFund">Salary
+                                                                </label>
+                                                                <label class="radio-inline ">
+                                                                    <input type="radio" name="option" value="Business" ng-model="btOrigiinOfFund">Business
+                                                                </label>
+                                                                <label class="radio-inline ">
+                                                                    <input type="radio" name="option" value="Inheritance" ng-model="btOrigiinOfFund">Inheritance
+                                                                </label>
+                                                                <label class="radio-inline ">
+                                                                    <input type="radio" name="option" value="Speculation" ng-model="btOrigiinOfFund">Speculation
+                                                                </label>
+                                                                <label class="radio-inline ">
+                                                                    <input type="radio" name="option" value="Spouse" ng-model="btOrigiinOfFund">Spouse
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label col-xs-3 intLabel">If Other</label>
+                                                            <div class="col-xs-9 intLabel1">
+                                                                <input type="text" class="form-control input" ng-model="btOrigiinOfFundDesc">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <label class="control-label col-xs-3 intLabel labelmargin">PEP Status</label>
+                                                            <div class="col-xs-4 intLabel1 labelmargin">
+                                                                <p class="noPadding">Have you been entrusted with a prominent public function</p>
+                                                            </div>
+                                                            <div class="col-xs-1 noPadding radioGroup3 labelmargin">
+                                                                <div>
+                                                                  <label>Yes <input type="radio" name="option" value="true" ng-model="btPEPstatus"></label> 
+                                                                </div>
+                                                               <div>
+                                                                <label><span style="margin-right:6px;">No</span>
+                                                                <input type="radio" name="option" value="false" ng-model="btPEPstatus"></label> 
+                                                                </div>
+                                                            </div>
+                                                            <div class="control-label col-xs-4">
+                                                                <label>Please explain:</label>
+                                                                <input type="text" class="form-control input" ng-model="btPEPDesc" autocomplete="off">
+                                                            </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <button class="btn payInstruction submit" ng-disabled="disableSaveBankTransfer" ng-click="saveBankTransferDetails()">Submit</button>
+                                                        </div>
+                                                    </div>
+
+                                                        </div>
+                                                    </div>
+                                                     <div class="row" ng-if="disableSaveBankTransfer">
+                                                        <div class="col-xs-4 successMsg">Success!</div>
+                                                        <div class="col-xs-8 errorMsg">Your application has been sent. Detailed bank transfer instructions will be sent to you on approval.</div>
+                                                     </div>
+                                                
+                                                </form>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+</section>
+                                    <div class="modal fade" id="myModal" role="dialog">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content modal-main">
+                                                <img id="cross_image" src="resources/images/icon-x.svg " role="button" data-dismiss="modal" class="pull-right" style="margin:-15px -35px;height:15px;opacity:0.5">
+                                              <h4 class="text-center modalHead">Wallet options</h4>
+                                            <div class="row allignMiddle">
+                                                <div class="col-xs-7 ">
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                                <h4 class="noMargin foundationHead">High security wallet <span style="color:#fc7930">(recommended)</span></h4>
+                                                                <ul style="padding-left:15px;">
+                                                                    <li>
+                                                                        <h5> Ammbr foundation <small>(cold storage paper wallet)<p  class="foundationText">Paper wallets keep your private keys offline away from hackers. Wallet keys can be moved to a traditional wallet at any point.</p></small></h5>
+                                                                    </li>
+                                                                </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12" style="padding:0px 25px">
+                                                            <button type="button" class="btn payInstruction" ng-click="genNewWallet()" style="width:100%">Generate a wallet</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-5">
+                                                    <div>
+                                                        <img id="qrImage" src="resources/images/Qr-Image.png" alt="" class="qrImage">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row marginTop1">
+                                                <div class="col-xs-7">
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <h4 class="noMargin foundationHead">Other compatible wallets</h4>
+                                                            <h6 style="font-weight:medium">The following wallets are ERC-20 compatible:</h6>
+                                                            <ul style="padding-left:15px;" class="compWallet">
+                                                                <li><h6>MyEtherWallet<small> (web wallet)</small></h6></li>
+                                                                <li><h6>MetaMask<small> (browser plugin)</small></h6></li>
+                                                                <li><h6>Mist<small> (desktop)</small></h6></li>
+                                                                <li><h6>Parity<small> (desktop)</small></h6></li>
+                                                                <li><h6>imToken<small> (iPhone)</small></h6></li>
+                                                                <li><h6>imToken<small> (android)</small></h6></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-5">
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <h4 class="noMargin foundationHead">Incompatible wallets</h4>
+                                                            <ul style="padding-left:15px;" class="compWallet">
+                                                                    <li><h6><small>Jaxx</small></h6></li>
+                                                                    <li><h6><small>Exodus</small></h6></li>
+                                                                    <li><h6><small>Coinbase</small></h6></li>
+                                                                    <li><h6><small>Poloniex</small></h6></li>
+                                                                    <li><h6><small>Kraken</small></h6></li>
+                                                                    <li><h6><small>Bitstamp</small></h6></li>
+                                                                    <li><h6><small>Bitfinex</small></h6></li>
+                                                                    <li><h6><small>Bitrexx</small></h6></li>
+                                                                    <li><h6><small>Cex.io</small></h6></li>
+                                                                </ul>
+                                                        </div>
+                                                    </div>
+                                                        
+                                                </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                </article>
+
+                                <article class="paymentInstruction" ng-show="showFrontPage">
+                                    
+                                    
+
+                                </article>
+
+
+                                <div style="display:none">
+                                    <div id="paperwalletaddqr"></div>
+                                    <div id="paperwalletprivqr"></div>
+                                </div>
+
+
+                                
+                            </main>
+
+
+                            
+
+        
+
+
+        <!-- <div data-ng-repeat="alert in notifier.alerts"> -->
+        <!-- <div data-ng-repeat="alert in notifier.alerts">
+            <div class="alert popup alert-{{alert.type}} animated-show-hide">
+                <div class="container">
+                    <div class="alert-message" ng-bind-html="alert.message"></div>
+                </div>
+                <i class="icon-close" ng-click="alert.close()"></i>
+            </div>
+        </div> -->
+        </div>
+        </section>
+        </div>
+
+      
+        </div>
+        </div>
+    </header>
+
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="popover"]').popover(); 
+        });
+    </script>
+
+
+</body>
+
+</html>

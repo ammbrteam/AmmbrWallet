@@ -1,3 +1,0 @@
-var properties={
-	node_server_url:"http://192.168.1.148:8545"
-}

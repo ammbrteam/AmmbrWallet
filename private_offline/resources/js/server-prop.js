@@ -1,0 +1,1 @@
+var serverKeys = { extendedPubKey : 'tpubD6NzVbkrYhZ4WwBv7cDmau8EJRgZdjtuaxaMGvwL6P6hwoJEK8sS4ryAoMgQc7RB16oge6U5CfvYpS5qcAwAaJNe9pco62ErvdnNyxDDo6y' }
